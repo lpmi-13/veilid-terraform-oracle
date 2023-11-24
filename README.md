@@ -1,4 +1,4 @@
-# Veild Terraform Oracle
+# Veilid Terraform Oracle
 
 Since the [Oracle Cloud](https://www.oracle.com/uk/cloud/free/) free tier _should_ be enough to run two (COUNT EM!) AMD Compute VMs, that means all you need to do is sign up for an oracle account and _in theory_ you can run two veilid nodes for free! CAVEAT: I'm still testing if this is true, so caveat emptor.
 
