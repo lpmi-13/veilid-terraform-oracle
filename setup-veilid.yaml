@@ -5,6 +5,11 @@ runcmd:
     - wget -O- https://packages.veilid.net/gpg/veilid-packages-key.public | sudo gpg --dearmor -o /usr/share/keyrings/veilid-packages-keyring.gpg
     - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/veilid-packages-keyring.gpg] https://packages.veilid.net/apt stable main" | sudo tee /etc/apt/sources.list.d/veilid.list 1>/dev/null
     - apt update
+    # we need to explicitly update the iptables rules since the oracle VMs are configured to only accept tcp:22 and udp:123 by default
+    - sudo iptables -I INPUT 5 -p tcp --dport 5150 -j ACCEPT
+    - sudo iptables -I INPUT 5 -p udp --dport 5150 -j ACCEPT
+    - sudo iptables -I INPUT 5 -p tcp --dport 5151 -j ACCEPT
+    - sudo iptables -I INPUT 5 -p udp --dport 5151 -j ACCEPT
     - sudo apt install veilid-server veilid-cli
     - sudo systemctl enable --now veilid-server.service
     - sudo systemctl start veilid-server.service
