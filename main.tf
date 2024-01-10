@@ -84,14 +84,15 @@ resource "oci_core_security_list" "ingress" {
 
   egress_security_rules {
     destination      = "0.0.0.0/0"
+    description      = "let all the packets out"
     protocol         = "all"
     stateless        = false
     destination_type = "CIDR_BLOCK"
   }
 
-  # let us ssh in if we want to
   ingress_security_rules {
     protocol    = "6"
+    description = "allow ssh access"
     source      = "0.0.0.0/0"
     source_type = "CIDR_BLOCK"
     stateless   = false
@@ -102,9 +103,9 @@ resource "oci_core_security_list" "ingress" {
     }
   }
 
-  # open port 5150 for TCP connections
   ingress_security_rules {
     protocol    = "6"
+    description = "open port 5150 for TCP connections"
     source      = "0.0.0.0/0"
     source_type = "CIDR_BLOCK"
     stateless   = false
@@ -115,9 +116,9 @@ resource "oci_core_security_list" "ingress" {
     }
   }
 
-  # open port 5150 for UDP connections
   ingress_security_rules {
     protocol    = "17"
+    description = "open port 5150 for UDP connections"
     source      = "0.0.0.0/0"
     source_type = "CIDR_BLOCK"
     stateless   = false
