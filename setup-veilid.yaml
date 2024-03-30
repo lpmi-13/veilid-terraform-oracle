@@ -13,3 +13,11 @@ runcmd:
     - sudo apt install veilid-server veilid-cli
     - sudo systemctl enable --now veilid-server.service
     - sudo systemctl start veilid-server.service
+
+# set up automatic updates just for these two packages every wednesday at 5AM
+write_files:
+  - owner: root:root
+    path: /etc/crontab
+    content: |
+        0 5 * * 3 root /usr/bin/apt update -y
+        5 5 * * 3 root DEBIAN_FRONTEND=noninteractive /usr/bin/apt install --only-upgrade veilid-server veilid-cli -y
