@@ -39,96 +39,7 @@ locals {
   availability_domain = "pKgX:UK-LONDON-1-AD-1"
 }
 
-# we need all of these networking resources because the terraform config for the
-# oci_core_instance requires that we tell it what subnet to be placed in
-resource "oci_core_vcn" "internal" {
-  dns_label      = "veilid"
-  cidr_block     = "10.0.0.0/16"
-  compartment_id = local.compartment_id
-  display_name   = "veilid-network"
-}
 
-resource "oci_core_subnet" "internal" {
-  cidr_block        = "10.0.0.0/24"
-  compartment_id    = local.compartment_id
-  vcn_id            = oci_core_vcn.internal.id
-  route_table_id    = oci_core_route_table.route_to_internet.id
-  security_list_ids = [oci_core_security_list.ingress.id]
-
-  display_name = "veilid-subnet"
-}
-
-resource "oci_core_internet_gateway" "gateway" {
-  compartment_id = local.compartment_id
-  vcn_id         = oci_core_vcn.internal.id
-}
-
-resource "oci_core_route_table" "route_to_internet" {
-
-  compartment_id = local.compartment_id
-  vcn_id         = oci_core_vcn.internal.id
-
-  route_rules {
-    network_entity_id = oci_core_internet_gateway.gateway.id
-
-    description      = "the route out to the public internet"
-    destination      = "0.0.0.0/0"
-    destination_type = "CIDR_BLOCK"
-  }
-}
-
-resource "oci_core_security_list" "ingress" {
-
-  compartment_id = local.compartment_id
-  vcn_id         = oci_core_vcn.internal.id
-
-  egress_security_rules {
-    destination      = "0.0.0.0/0"
-    description      = "let all the packets out"
-    protocol         = "all"
-    stateless        = false
-    destination_type = "CIDR_BLOCK"
-  }
-
-  ingress_security_rules {
-    protocol    = "6"
-    description = "allow ssh access"
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = false
-
-    tcp_options {
-      max = 22
-      min = 22
-    }
-  }
-
-  ingress_security_rules {
-    protocol    = "6"
-    description = "open port 5150 for TCP connections"
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = false
-
-    tcp_options {
-      max = 5150
-      min = 5150
-    }
-  }
-
-  ingress_security_rules {
-    protocol    = "17"
-    description = "open port 5150 for UDP connections"
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = false
-
-    udp_options {
-      max = 5150
-      min = 5150
-    }
-  }
-}
 
 resource "oci_core_instance" "veilid_node" {
   count = local.how_many_nodes
@@ -139,7 +50,8 @@ resource "oci_core_instance" "veilid_node" {
   display_name        = "veilid-node-${count.index + 1}"
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.internal.id
+    subnet_id     = oci_core_subnet.internal.id
+    assign_ipv6ip = true
   }
 
   source_details {
