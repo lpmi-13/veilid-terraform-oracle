@@ -38,9 +38,13 @@ And just choose the region you want to use. If you don't want to use `uk-london-
 
 > if you get logged out for any reason (this process shouldn't take more than 1-2 minutes) renew your credentials by running `oci session authenticate --no-browser` again.
 
-4. Run `terraform init && terraform apply`.
+4. If you'd like SSH access, then add your ssh key contents in the `ssh_authorized_keys` section in `setup-veilid.yaml`. If you don't need/want SSH acces, skip this step.
 
-5. Once the instance is booted up, it should start veilid automatically, but if you'd like to poke around, ssh in using the ssh key pair that you added in the terraform configuration.
+> If you want to use a separate SSH key, then generate one in this folder like `ssh-keygen -t ed25519 -o -a 100 -f veilid-key`.
+
+5. Run `terraform init && terraform apply`.
+
+6. Once the instance is booted up, it should start veilid automatically, but if you'd like to poke around, ssh in using the ssh key pair that you added in the terraform configuration.
 
 ```
 ssh -i PATH_TO_YOUR_PRIVATE_KEY ubuntu@SERVER_IP_ADDRESS
