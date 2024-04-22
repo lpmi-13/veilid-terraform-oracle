@@ -6,6 +6,10 @@ Since the [Oracle Cloud](https://www.oracle.com/uk/cloud/free/) free tier _shoul
 
 [This](https://developer.hashicorp.com/terraform/tutorials/oci-get-started/oci-build) is the best and simplest walk-through to follow, and even it requires multiple browser tabs open to work out what the hell is going on.
 
+## Cost
+
+The default configuration runs inside the Oracle free tier, so the cost will be nothing.
+
 ## Steps
 
 1. Sign up for an [Oracle Cloud Account](https://www.oracle.com/cloud/sign-in.html)
@@ -46,8 +50,21 @@ And just choose the region you want to use. If you don't want to use `uk-london-
 
 6. Once the instance is booted up, it should start veilid automatically, but if you'd like to poke around, ssh in using the ssh key pair that you added in the terraform configuration.
 
+You'll see the IP addresses for the instances in the output after running the commands above:
+
+```sh
+Outputs:
+
+public_ips = [
+  "84.8.150.224",
+  "144.21.58.188",
+]
 ```
-ssh -i PATH_TO_YOUR_PRIVATE_KEY ubuntu@SERVER_IP_ADDRESS
+
+and then you can SSH into them if you want.
+
+```sh
+ssh -i PATH_TO_YOUR_PRIVATE_KEY veilid@SERVER_IP_ADDRESS
 ```
 
 > Note: if you try to SSH in too soon, you may see a message saying "System is booting up. Unprivileged users are not permitted to log in yet. Please come back later. For technical details, see pam_nologin(8)." Just try again in a minute or so.
