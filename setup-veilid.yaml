@@ -1,4 +1,26 @@
 #cloud-config
+# Add groups to the system
+# Adds the ubuntu group with members 'root' and 'sys'
+# and the empty group veilid.
+groups:
+    - ubuntu: [root, sys]
+    - veilid
+
+# Add users to the system. Users are added after groups are added.
+users:
+    - default
+    - name: veilid
+      gecos: veilid
+      shell: /bin/bash
+      primary_group: veilid
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      groups: users, admin
+      lock_passwd: false
+      ssh_authorized_keys:
+        # put the value of the ssh-key you want to use here
+        # EXAMPLE:
+        # - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC56peg7LF9mmZzmk8KIm/HXGKMittedIuE6qi5UuPs0
+
 
 # sets up veilid to run automatically
 runcmd:

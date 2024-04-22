@@ -159,9 +159,6 @@ resource "oci_core_instance" "veilid_node" {
   }
 
   metadata = {
-    # make sure you enter the contents of your public SSH key here if you want to be able
-    # to connect to the instance this will be the key associated with the default 'ubuntu' user
-    ssh_authorized_keys = "YOUR_PUBLIC_SSH_KEY_CONTENTS_HERE"
     # this is the cloud init script used to install and configure the veilid-server
     user_data = base64encode(file("./setup-veilid.yaml"))
   }
