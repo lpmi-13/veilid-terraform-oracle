@@ -1,6 +1,6 @@
 # Veilid Terraform Oracle
 
-Since the [Oracle Cloud](https://www.oracle.com/uk/cloud/free/) free tier _should_ be enough to run two (COUNT EM!) AMD Compute VMs, that means all you need to do is sign up for an oracle account and _in theory_ you can run two veilid nodes for free! CAVEAT: I'm still testing if this is true, so caveat emptor.
+Since the [Oracle Cloud](https://www.oracle.com/uk/cloud/free/) free tier _should_ be enough to run two (COUNT EM!) AMD Compute VMs, that means all you need to do is sign up for an oracle account and _in theory_ you can run two [veilid](https://veilid.com) nodes for free! NOTE: I'm still testing if this is true, so caveat emptor.
 
 > FAIR WARNING!!!! Dealing with Oracle Cloud is NOT for the feint of heart...the process of actually setting up an account and bushwhacking through their docs to configure a simple token you can use to authenticate with terraform is fraught with peril and may make you immediately regret your decision.
 
