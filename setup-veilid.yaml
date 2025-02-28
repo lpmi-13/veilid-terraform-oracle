@@ -37,7 +37,7 @@ runcmd:
     - sudo systemctl enable --now veilid-server.service
     - sudo systemctl start veilid-server.service
 
-# set up automatic updates just for these two packages every wednesday at 5AM
+# set up automatic updates just for these two packages every day at 5AM
 write_files:
   - owner: root:root
     path: /etc/crontab
