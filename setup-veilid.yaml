@@ -34,13 +34,15 @@ runcmd:
     - sudo ip6tables -I INPUT 5 -p tcp --dport 5150 -j ACCEPT
     - sudo ip6tables -I INPUT 5 -p udp --dport 5150 -j ACCEPT
     - sudo apt install veilid-server veilid-cli
+    # we need this to make sure the node works behind the Oracle Cloud NAT, since we're not paying for a static IPv4 address
+    - 'sudo sed -i ''/^ *network:/a \    detect_address_changes: true'' /etc/veilid-server/veilid-server.conf'
     - sudo systemctl enable --now veilid-server.service
     - sudo systemctl start veilid-server.service
 
 # set up automatic updates just for these two packages every day at 5AM
 write_files:
-  - owner: root:root
-    path: /etc/crontab
-    content: |
-        0 5 * * * root /usr/bin/apt update -y
-        5 5 * * * root DEBIAN_FRONTEND=noninteractive /usr/bin/apt install --only-upgrade veilid-server veilid-cli -y
+    - owner: root:root
+      path: /etc/crontab
+      content: |
+          0 5 * * * root /usr/bin/apt update -y
+          5 5 * * * root DEBIAN_FRONTEND=noninteractive /usr/bin/apt install --only-upgrade veilid-server veilid-cli -y
